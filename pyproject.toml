@@ -1,12 +1,12 @@
 [project]
 name = "bitwarden-py"
 version = "0.1.0"
-description = "Python wrapper for the Bitwarden CLI"
+description = "A simple Python wrapper for the Bitwarden CLI — programmatically read and update passwords stored in your Bitwarden vault."
 readme = "README.md"
 requires-python = ">=3.12"
 license = "MIT"
 authors = [{ name = "SpaceShaman", email = "spaceshaman@tuta.io" }]
-keywords = ["bitwarden"]
+keywords = ["bitwarden", "bitwarden-cli"]
 classifiers = [
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.12",
