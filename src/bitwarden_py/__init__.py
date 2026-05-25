@@ -1,2 +1,3 @@
-def hello() -> str:
-    return "Hello from bitwarden-py!"
+from .main import Bitwarden
+
+__all__ = ["Bitwarden"]
