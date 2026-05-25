@@ -1,4 +1,11 @@
-from .commands import get_status, login, logout, set_server_url
+from .commands import (
+    get_password,
+    get_session,
+    get_status,
+    login,
+    logout,
+    set_server_url,
+)
 
 
 class Bitwarden:
@@ -11,6 +18,7 @@ class Bitwarden:
         self._email = email
         self._password = password
         self._server_url = server_url
+        self._session = None
         self._setup()
 
     def _setup(self) -> None:
@@ -22,3 +30,9 @@ class Bitwarden:
         status = get_status()
         if status.status == "unauthenticated":
             login(self._email, self._password)
+        self._session = get_session(self._password)
+
+    def get_password(self, item_name: str) -> str:
+        if not self._session:
+            raise RuntimeError("Bitwarden session is not established.")
+        return get_password(self._session, item_name)
