@@ -1,8 +1,10 @@
+import base64
 import json
 import os
-import subprocess
 from dataclasses import dataclass
 from typing import Literal
+
+from .command_runner import run_command
 
 
 @dataclass
@@ -12,7 +14,7 @@ class Status:
 
 
 def get_status() -> Status:
-    output = _run_command(["bw", "status"])
+    output = run_command(["bw", "status"])
     status_data = json.loads(output)
     return Status(
         status=status_data.get("status", "unauthenticated"),
@@ -21,7 +23,7 @@ def get_status() -> Status:
 
 
 def login(email: str, password: str) -> None:
-    _run_command(
+    run_command(
         [
             "bw",
             "login",
@@ -33,30 +35,44 @@ def login(email: str, password: str) -> None:
 
 
 def logout() -> None:
-    _run_command(["bw", "logout"])
+    run_command(["bw", "logout"])
 
 
 def set_server_url(url: str) -> None:
-    _run_command(["bw", "config", "server", url])
+    run_command(["bw", "config", "server", url])
 
 
 def get_session(password: str) -> str:
     os.environ.setdefault("BW_PASSWORD", password)
-    return _run_command(["bw", "unlock", "--raw", "--passwordenv", "BW_PASSWORD"])
+    return run_command(["bw", "unlock", "--raw", "--passwordenv", "BW_PASSWORD"])
 
 
 def get_password(session: str, item_name: str) -> str:
-    return _run_command(["bw", "get", "password", item_name, "--session", session])
+    return run_command(["bw", "get", "password", item_name, "--session", session])
 
 
-def _run_command(command: list[str]) -> str:
-    try:
-        return subprocess.run(
-            command,
-            capture_output=True,
-            text=True,
-            check=True,
-            stdin=subprocess.DEVNULL,
-        ).stdout.strip()
-    except subprocess.CalledProcessError as e:
-        raise RuntimeError(e.stderr.strip()) from e
+def set_password(session: str, item_name: str, new_password: str) -> None:
+    item = json.loads(
+        run_command(["bw", "get", "item", item_name, "--session", session])
+    )
+
+    if not item.get("login"):
+        raise RuntimeError(f"Item '{item_name}' is not a login item")
+
+    item["login"]["password"] = new_password
+
+    encoded_item = base64.b64encode(
+        json.dumps(item, separators=(",", ":")).encode()
+    ).decode()
+
+    run_command(
+        [
+            "bw",
+            "edit",
+            "item",
+            item["id"],
+            encoded_item,
+            "--session",
+            session,
+        ]
+    )
