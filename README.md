@@ -68,6 +68,9 @@ bw = Bitwarden(
 # Fetch a password by item name
 db_password = bw.get_password("My Database")
 print(db_password)  # → "s3cr3t!"
+
+# Update the password of an item
+bw.set_password("My Database", "n3wp4ssw0rd")
 ```
 
 ### Using a self-hosted server
