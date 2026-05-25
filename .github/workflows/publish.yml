@@ -9,7 +9,6 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-22.04
-    needs: tests
     environment:
       name: pypi
     permissions:
