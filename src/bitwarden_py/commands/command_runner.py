@@ -11,4 +11,4 @@ def run_command(command: list[str]) -> str:
             stdin=subprocess.DEVNULL,
         ).stdout.strip()
     except subprocess.CalledProcessError as e:
-        raise RuntimeError(e.stderr.strip()) from e
+        raise RuntimeError(e.stderr.strip()) from None
