@@ -35,11 +35,13 @@ class Bitwarden:
         server_url: str = "https://vault.bitwarden.eu",
     ):
         status = get_status()
-        if status.status != "unauthenticated":
-            logout()
         if status.server_url != server_url:
+            if status.status != "unauthenticated":
+                logout()
+                status.status = "unauthenticated"
             set_server_url(server_url)
-        login(email, password)
+        if status.status == "unauthenticated":
+            login(email, password)
         self._session = get_session(password)
 
     def create_item(self, item: dict) -> dict:
