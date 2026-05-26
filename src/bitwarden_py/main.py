@@ -50,11 +50,17 @@ class Bitwarden:
             json.dumps(data, separators=(",", ":")).encode()
         ).decode()
 
+    def create_item(self, item: dict) -> dict:
+        return create_item(self._session, self._encode(item))
+
+    def create_folder(self, folder: dict) -> dict:
+        return create_folder(self._session, self._encode(folder))
+
+    def create_attachment(self, file_path: str, item_id: str) -> dict:
+        return create_attachment(self._session, file_path, item_id)
+
     def get_password(self, item_name: str) -> str:
         return get_password(self._session, item_name)
-
-    def edit_password(self, item_name: str, new_password: str) -> None:
-        edit_password(self._session, item_name, new_password)
 
     def get_item(self, id_or_name: str) -> dict:
         return get_item(self._session, id_or_name)
@@ -105,14 +111,8 @@ class Bitwarden:
     def list_organizations(self, search: str | None = None) -> list[dict]:
         return list_organizations(self._session, search=search)
 
-    def create_item(self, item: dict) -> dict:
-        return create_item(self._session, self._encode(item))
-
-    def create_folder(self, folder: dict) -> dict:
-        return create_folder(self._session, self._encode(folder))
-
-    def create_attachment(self, file_path: str, item_id: str) -> dict:
-        return create_attachment(self._session, file_path, item_id)
+    def edit_password(self, item_name: str, new_password: str) -> None:
+        edit_password(self._session, item_name, new_password)
 
     def edit_item(self, item_id: str, item: dict) -> dict:
         return edit_item(self._session, item_id, self._encode(item))
