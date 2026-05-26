@@ -1,10 +1,10 @@
-import base64
 import json
 import os
 from dataclasses import dataclass
 from typing import Literal
 
 from .command_runner import run_command
+from .encoding import encode
 
 
 @dataclass
@@ -47,13 +47,13 @@ def get_session(password: str) -> str:
     return run_command(["bw", "unlock", "--raw", "--passwordenv", "BW_PASSWORD"])
 
 
-def create_item(session: str, encoded_json: str) -> dict:
-    output = run_command(["bw", "create", "item", encoded_json, "--session", session])
+def create_item(session: str, item: dict) -> dict:
+    output = run_command(["bw", "create", "item", encode(item), "--session", session])
     return json.loads(output)
 
 
-def create_folder(session: str, encoded_json: str) -> dict:
-    output = run_command(["bw", "create", "folder", encoded_json, "--session", session])
+def create_folder(session: str, folder: dict) -> dict:
+    output = run_command(["bw", "create", "folder", encode(folder), "--session", session])
     return json.loads(output)
 
 
@@ -161,33 +161,29 @@ def edit_password(session: str, item_name: str, new_password: str) -> None:
 
     item["login"]["password"] = new_password
 
-    encoded_item = base64.b64encode(
-        json.dumps(item, separators=(",", ":")).encode()
-    ).decode()
-
     run_command(
         [
             "bw",
             "edit",
             "item",
             item["id"],
-            encoded_item,
+            encode(item),
             "--session",
             session,
         ]
     )
 
 
-def edit_item(session: str, item_id: str, encoded_json: str) -> dict:
+def edit_item(session: str, item_id: str, item: dict) -> dict:
     output = run_command(
-        ["bw", "edit", "item", item_id, encoded_json, "--session", session]
+        ["bw", "edit", "item", item_id, encode(item), "--session", session]
     )
     return json.loads(output)
 
 
-def edit_folder(session: str, folder_id: str, encoded_json: str) -> dict:
+def edit_folder(session: str, folder_id: str, folder: dict) -> dict:
     output = run_command(
-        ["bw", "edit", "folder", folder_id, encoded_json, "--session", session]
+        ["bw", "edit", "folder", folder_id, encode(folder), "--session", session]
     )
     return json.loads(output)
 

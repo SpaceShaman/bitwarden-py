@@ -1,6 +1,3 @@
-import base64
-import json
-
 from .commands import (
     create_attachment,
     create_folder,
@@ -44,17 +41,11 @@ class Bitwarden:
         login(email, password)
         self._session = get_session(password)
 
-    @staticmethod
-    def _encode(data: dict) -> str:
-        return base64.b64encode(
-            json.dumps(data, separators=(",", ":")).encode()
-        ).decode()
-
     def create_item(self, item: dict) -> dict:
-        return create_item(self._session, self._encode(item))
+        return create_item(self._session, item)
 
     def create_folder(self, folder: dict) -> dict:
-        return create_folder(self._session, self._encode(folder))
+        return create_folder(self._session, folder)
 
     def create_attachment(self, file_path: str, item_id: str) -> dict:
         return create_attachment(self._session, file_path, item_id)
@@ -115,10 +106,10 @@ class Bitwarden:
         edit_password(self._session, item_name, new_password)
 
     def edit_item(self, item_id: str, item: dict) -> dict:
-        return edit_item(self._session, item_id, self._encode(item))
+        return edit_item(self._session, item_id, item)
 
     def edit_folder(self, folder_id: str, folder: dict) -> dict:
-        return edit_folder(self._session, folder_id, self._encode(folder))
+        return edit_folder(self._session, folder_id, folder)
 
     def delete_item(self, item_id: str, permanent: bool = False) -> None:
         delete_item(self._session, item_id, permanent=permanent)
