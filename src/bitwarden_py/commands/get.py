@@ -26,3 +26,8 @@ def get_uri(session: str, id_or_name: str) -> str:
 
 def get_totp(session: str, id_or_name: str) -> str:
     return run_command(["bw", "get", "totp", id_or_name, "--session", session])
+
+
+def get_template(object_type: str) -> dict:
+    output = run_command(["bw", "get", "template", object_type])
+    return json.loads(output)

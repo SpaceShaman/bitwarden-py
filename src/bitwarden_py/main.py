@@ -13,6 +13,7 @@ from .commands import (
     get_password,
     get_session,
     get_status,
+    get_template,
     get_totp,
     get_uri,
     get_username,
@@ -67,6 +68,9 @@ class Bitwarden:
 
     def get_totp(self, id_or_name: str) -> str:
         return get_totp(self._session, id_or_name)
+
+    def get_template(self, object_type: str) -> dict:
+        return get_template(object_type)
 
     def list_items(
         self,
