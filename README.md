@@ -235,6 +235,18 @@ Deletes an attachment from a vault item.
 
 ---
 
+### Session
+
+#### `bw.logout() → None`
+
+Logs out of the Bitwarden vault and clears the local session.
+
+#### `bw.sync() → None`
+
+Downloads the encrypted vault from the Bitwarden server. Useful when you have made changes in another Bitwarden client (web vault, browser extension, mobile app) and want the CLI to reflect the latest state.
+
+---
+
 ## License
 
 [MIT](LICENSE)
