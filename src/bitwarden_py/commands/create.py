@@ -4,19 +4,19 @@ from .command_runner import run_command
 from .encoding import encode
 
 
-def create_item(session: str, item: dict) -> dict:
-    output = run_command(["bw", "create", "item", encode(item), "--session", session])
+def create_item(password: str, item: dict) -> dict:
+    output = run_command(["bw", "create", "item", encode(item)], password=password)
     return json.loads(output)
 
 
-def create_folder(session: str, folder: dict) -> dict:
+def create_folder(password: str, folder: dict) -> dict:
     output = run_command(
-        ["bw", "create", "folder", encode(folder), "--session", session]
+        ["bw", "create", "folder", encode(folder)], password=password
     )
     return json.loads(output)
 
 
-def create_attachment(session: str, file_path: str, item_id: str) -> dict:
+def create_attachment(password: str, file_path: str, item_id: str) -> dict:
     output = run_command(
         [
             "bw",
@@ -26,8 +26,7 @@ def create_attachment(session: str, file_path: str, item_id: str) -> dict:
             file_path,
             "--itemid",
             item_id,
-            "--session",
-            session,
-        ]
+        ],
+        password=password,
     )
     return json.loads(output)

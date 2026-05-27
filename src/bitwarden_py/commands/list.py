@@ -4,7 +4,7 @@ from .command_runner import run_command
 
 
 def list_items(
-    session: str,
+    password: str,
     search: str | None = None,
     folder_id: str | None = None,
     collection_id: str | None = None,
@@ -12,7 +12,7 @@ def list_items(
     url: str | None = None,
     trash: bool = False,
 ) -> list[dict]:
-    cmd = ["bw", "list", "items", "--session", session]
+    cmd = ["bw", "list", "items"]
     if search:
         cmd += ["--search", search]
     if folder_id:
@@ -25,31 +25,31 @@ def list_items(
         cmd += ["--url", url]
     if trash:
         cmd.append("--trash")
-    return json.loads(run_command(cmd))
+    return json.loads(run_command(cmd, password=password))
 
 
-def list_folders(session: str, search: str | None = None) -> list[dict]:
-    cmd = ["bw", "list", "folders", "--session", session]
+def list_folders(password: str, search: str | None = None) -> list[dict]:
+    cmd = ["bw", "list", "folders"]
     if search:
         cmd += ["--search", search]
-    return json.loads(run_command(cmd))
+    return json.loads(run_command(cmd, password=password))
 
 
 def list_collections(
-    session: str,
+    password: str,
     organization_id: str | None = None,
     search: str | None = None,
 ) -> list[dict]:
-    cmd = ["bw", "list", "collections", "--session", session]
+    cmd = ["bw", "list", "collections"]
     if organization_id:
         cmd += ["--organizationid", organization_id]
     if search:
         cmd += ["--search", search]
-    return json.loads(run_command(cmd))
+    return json.loads(run_command(cmd, password=password))
 
 
-def list_organizations(session: str, search: str | None = None) -> list[dict]:
-    cmd = ["bw", "list", "organizations", "--session", session]
+def list_organizations(password: str, search: str | None = None) -> list[dict]:
+    cmd = ["bw", "list", "organizations"]
     if search:
         cmd += ["--search", search]
-    return json.loads(run_command(cmd))
+    return json.loads(run_command(cmd, password=password))

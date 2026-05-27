@@ -4,9 +4,9 @@ from .command_runner import run_command
 from .encoding import encode
 
 
-def edit_password(session: str, item_name: str, new_password: str) -> None:
+def edit_password(password: str, item_name: str, new_password: str) -> None:
     item = json.loads(
-        run_command(["bw", "get", "item", item_name, "--session", session])
+        run_command(["bw", "get", "item", item_name], password=password)
     )
 
     if not item.get("login"):
@@ -21,21 +21,20 @@ def edit_password(session: str, item_name: str, new_password: str) -> None:
             "item",
             item["id"],
             encode(item),
-            "--session",
-            session,
-        ]
+        ],
+        password=password,
     )
 
 
-def edit_item(session: str, item_id: str, item: dict) -> dict:
+def edit_item(password: str, item_id: str, item: dict) -> dict:
     output = run_command(
-        ["bw", "edit", "item", item_id, encode(item), "--session", session]
+        ["bw", "edit", "item", item_id, encode(item)], password=password
     )
     return json.loads(output)
 
 
-def edit_folder(session: str, folder_id: str, folder: dict) -> dict:
+def edit_folder(password: str, folder_id: str, folder: dict) -> dict:
     output = run_command(
-        ["bw", "edit", "folder", folder_id, encode(folder), "--session", session]
+        ["bw", "edit", "folder", folder_id, encode(folder)], password=password
     )
     return json.loads(output)

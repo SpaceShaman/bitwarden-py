@@ -11,7 +11,6 @@ from .commands import (
     get_item,
     get_notes,
     get_password,
-    get_session,
     get_status,
     get_template,
     get_totp,
@@ -34,6 +33,7 @@ class Bitwarden:
         password: str,
         server_url: str = "https://vault.bitwarden.eu",
     ):
+        self._password = password
         status = get_status()
         if status.server_url != server_url:
             if status.status != "unauthenticated":
@@ -42,34 +42,33 @@ class Bitwarden:
             set_server_url(server_url)
         if status.status == "unauthenticated":
             login(email, password)
-        self._session = get_session(password)
 
     def create_item(self, item: dict) -> dict:
-        return create_item(self._session, item)
+        return create_item(self._password, item)
 
     def create_folder(self, folder: dict) -> dict:
-        return create_folder(self._session, folder)
+        return create_folder(self._password, folder)
 
     def create_attachment(self, file_path: str, item_id: str) -> dict:
-        return create_attachment(self._session, file_path, item_id)
+        return create_attachment(self._password, file_path, item_id)
 
     def get_password(self, item_name: str) -> str:
-        return get_password(self._session, item_name)
+        return get_password(self._password, item_name)
 
     def get_item(self, id_or_name: str) -> dict:
-        return get_item(self._session, id_or_name)
+        return get_item(self._password, id_or_name)
 
     def get_username(self, id_or_name: str) -> str:
-        return get_username(self._session, id_or_name)
+        return get_username(self._password, id_or_name)
 
     def get_notes(self, id_or_name: str) -> str:
-        return get_notes(self._session, id_or_name)
+        return get_notes(self._password, id_or_name)
 
     def get_uri(self, id_or_name: str) -> str:
-        return get_uri(self._session, id_or_name)
+        return get_uri(self._password, id_or_name)
 
     def get_totp(self, id_or_name: str) -> str:
-        return get_totp(self._session, id_or_name)
+        return get_totp(self._password, id_or_name)
 
     def get_template(self, object_type: str) -> dict:
         return get_template(object_type)
@@ -84,7 +83,7 @@ class Bitwarden:
         trash: bool = False,
     ) -> list[dict]:
         return list_items(
-            self._session,
+            self._password,
             search=search,
             folder_id=folder_id,
             collection_id=collection_id,
@@ -94,7 +93,7 @@ class Bitwarden:
         )
 
     def list_folders(self, search: str | None = None) -> list[dict]:
-        return list_folders(self._session, search=search)
+        return list_folders(self._password, search=search)
 
     def list_collections(
         self,
@@ -102,26 +101,26 @@ class Bitwarden:
         search: str | None = None,
     ) -> list[dict]:
         return list_collections(
-            self._session, organization_id=organization_id, search=search
+            self._password, organization_id=organization_id, search=search
         )
 
     def list_organizations(self, search: str | None = None) -> list[dict]:
-        return list_organizations(self._session, search=search)
+        return list_organizations(self._password, search=search)
 
     def edit_password(self, item_name: str, new_password: str) -> None:
-        edit_password(self._session, item_name, new_password)
+        edit_password(self._password, item_name, new_password)
 
     def edit_item(self, item_id: str, item: dict) -> dict:
-        return edit_item(self._session, item_id, item)
+        return edit_item(self._password, item_id, item)
 
     def edit_folder(self, folder_id: str, folder: dict) -> dict:
-        return edit_folder(self._session, folder_id, folder)
+        return edit_folder(self._password, folder_id, folder)
 
     def delete_item(self, item_id: str, permanent: bool = False) -> None:
-        delete_item(self._session, item_id, permanent=permanent)
+        delete_item(self._password, item_id, permanent=permanent)
 
     def delete_folder(self, folder_id: str, permanent: bool = False) -> None:
-        delete_folder(self._session, folder_id, permanent=permanent)
+        delete_folder(self._password, folder_id, permanent=permanent)
 
     def delete_attachment(self, attachment_id: str, item_id: str) -> None:
-        delete_attachment(self._session, attachment_id, item_id)
+        delete_attachment(self._password, attachment_id, item_id)

@@ -1,14 +1,16 @@
 import subprocess
 
 
-def run_command(command: list[str]) -> str:
+def run_command(command: list[str], password: str | None = None) -> str:
     try:
-        return subprocess.run(
+        result = subprocess.run(
             command,
+            input=password,
+            stdin=None if password else subprocess.DEVNULL,
             capture_output=True,
             text=True,
             check=True,
-            stdin=subprocess.DEVNULL,
-        ).stdout.strip()
+        )
+        return result.stdout.strip()
     except subprocess.CalledProcessError as e:
         raise RuntimeError(e.stderr.strip()) from None
