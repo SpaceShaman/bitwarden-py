@@ -1,6 +1,6 @@
 # bitwarden-py
 
-> A simple Python wrapper for the [Bitwarden CLI](https://bitwarden.com/help/cli/) — programmatically read and update passwords stored in your Bitwarden vault.
+> A Python wrapper for the [Bitwarden CLI](https://bitwarden.com/help/cli/) — programmatically manage your Bitwarden vault: create, read, edit and delete items, folders, collections, attachments, and more.
 
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/bitwarden-py)](https://pypi.org/project/bitwarden-py)
 [![PyPI - Version](https://img.shields.io/pypi/v/bitwarden-py)](https://pypi.org/project/bitwarden-py)

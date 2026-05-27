@@ -1,7 +1,7 @@
 [project]
 name = "bitwarden-py"
 version = "0.3.0"
-description = "A simple Python wrapper for the Bitwarden CLI — programmatically read and update passwords stored in your Bitwarden vault."
+description = "A Python wrapper for the Bitwarden CLI — programmatically manage your Bitwarden vault: create, read, edit and delete items, folders, collections, attachments, and more."
 readme = "README.md"
 requires-python = ">=3.12"
 license = "MIT"
