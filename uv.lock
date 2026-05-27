@@ -4,10 +4,5 @@ requires-python = ">=3.12"
 
 [[package]]
 name = "bitwarden-py"
-version = "0.1.0"
+version = "0.2.1"
 source = { editable = "." }
-
-[package.metadata]
-
-[package.metadata.requires-dev]
-dev = []

@@ -1,9 +1,14 @@
+import fcntl
 import json
 import os
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Literal
 
 from .command_runner import run_command
+
+_SESSION_FILE = Path.home() / ".cache" / "bitwarden-py" / "session"
+_LOCK_FILE = Path.home() / ".cache" / "bitwarden-py" / "session.lock"
 
 
 @dataclass
@@ -35,6 +40,7 @@ def login(email: str, password: str) -> None:
 
 def logout() -> None:
     run_command(["bw", "logout"])
+    clear_session()
 
 
 def set_server_url(url: str) -> None:
@@ -42,5 +48,33 @@ def set_server_url(url: str) -> None:
 
 
 def get_session(password: str) -> str:
-    os.environ.setdefault("BW_PASSWORD", password)
-    return run_command(["bw", "unlock", "--raw", "--passwordenv", "BW_PASSWORD"])
+    _LOCK_FILE.parent.mkdir(parents=True, exist_ok=True)
+    with open(_LOCK_FILE, "w") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        try:
+            if session := _read_session():
+                return session
+            os.environ["BW_PASSWORD"] = password
+            session = run_command(
+                ["bw", "unlock", "--raw", "--passwordenv", "BW_PASSWORD"]
+            )
+            os.environ.pop("BW_PASSWORD", None)
+            _write_session(session)
+            return session
+        finally:
+            fcntl.flock(lock, fcntl.LOCK_UN)
+
+
+def clear_session() -> None:
+    _SESSION_FILE.unlink(missing_ok=True)
+
+
+def _read_session() -> str | None:
+    if _SESSION_FILE.exists():
+        return _SESSION_FILE.read_text() or None
+    return None
+
+
+def _write_session(session: str) -> None:
+    _SESSION_FILE.parent.mkdir(parents=True, exist_ok=True)
+    _SESSION_FILE.write_text(session)

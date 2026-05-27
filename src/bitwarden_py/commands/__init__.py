@@ -1,4 +1,4 @@
-from .auth import Status, get_session, get_status, login, logout, set_server_url
+from .auth import Status, clear_session, get_session, get_status, login, logout, set_server_url
 from .create import create_attachment, create_folder, create_item
 from .delete import delete_attachment, delete_folder, delete_item
 from .edit import edit_folder, edit_item, edit_password
