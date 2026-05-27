@@ -38,3 +38,7 @@ def logout() -> None:
 
 def set_server_url(url: str) -> None:
     run_command(["bw", "config", "server", url])
+
+
+def sync() -> None:
+    run_command(["bw", "sync"])

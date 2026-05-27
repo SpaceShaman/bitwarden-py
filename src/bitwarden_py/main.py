@@ -23,6 +23,7 @@ from .commands import (
     login,
     logout,
     set_server_url,
+    sync,
 )
 
 
@@ -42,6 +43,13 @@ class Bitwarden:
             set_server_url(server_url)
         if status.status == "unauthenticated":
             login(email, password)
+        sync()
+
+    def logout(self) -> None:
+        logout()
+
+    def sync(self) -> None:
+        sync()
 
     def create_item(self, item: dict) -> dict:
         return create_item(self._password, item)
