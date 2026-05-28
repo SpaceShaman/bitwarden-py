@@ -8,6 +8,7 @@ from .commands import (
     edit_folder,
     edit_item,
     edit_password,
+    generate_password,
     get_item,
     get_notes,
     get_password,
@@ -132,3 +133,19 @@ class Bitwarden:
 
     def delete_attachment(self, attachment_id: str, item_id: str) -> None:
         delete_attachment(self._password, attachment_id, item_id)
+
+    def generate_password(
+        self,
+        length: int = 14,
+        lowercase: bool = True,
+        uppercase: bool = True,
+        number: bool = True,
+        special: bool = True,
+    ) -> str:
+        return generate_password(
+            length,
+            lowercase,
+            uppercase,
+            number,
+            special,
+        )
