@@ -235,6 +235,30 @@ Deletes an attachment from a vault item.
 
 ---
 
+### Generate
+
+#### `bw.generate_password(length?, lowercase?, uppercase?, number?, special?) → str`
+
+Generates a random password using the Bitwarden CLI.
+
+| Parameter   | Type   | Default | Description                        |
+|-------------|--------|---------|------------------------------------|
+| `length`    | `int`  | `14`    | Length of the generated password   |
+| `lowercase` | `bool` | `True`  | Include lowercase letters          |
+| `uppercase` | `bool` | `True`  | Include uppercase letters          |
+| `number`    | `bool` | `True`  | Include numbers                    |
+| `special`   | `bool` | `True`  | Include special characters         |
+
+```python
+password = bw.generate_password()
+# → e.g. "aB3!xK9@mN2#pQ"
+
+strong = bw.generate_password(length=24, special=True)
+pin = bw.generate_password(length=6, lowercase=False, uppercase=False, special=False)
+```
+
+---
+
 ### Session
 
 #### `bw.logout() → None`
