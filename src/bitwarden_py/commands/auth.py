@@ -9,6 +9,7 @@ from .command_runner import run_command
 class Status:
     status: Literal["locked", "unlocked", "unauthenticated"]
     server_url: str
+    user_email: str
 
 
 def get_status() -> Status:
@@ -17,6 +18,7 @@ def get_status() -> Status:
     return Status(
         status=status_data.get("status", "unauthenticated"),
         server_url=status_data.get("serverUrl", ""),
+        user_email=status_data.get("userEmail", ""),
     )
 
 

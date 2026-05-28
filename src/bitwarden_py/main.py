@@ -39,6 +39,9 @@ class Bitwarden:
     ):
         self._password = password
         status = get_status()
+        if status.user_email != email and status.status != "unauthenticated":
+            logout()
+            status.status = "unauthenticated"
         if status.server_url != server_url:
             if status.status != "unauthenticated":
                 logout()
