@@ -1,3 +1,5 @@
+from typing import Any
+
 from .commands import (
     create_attachment,
     create_folder,
@@ -52,19 +54,19 @@ class Bitwarden:
     def sync(self) -> None:
         sync()
 
-    def create_item(self, item: dict) -> dict:
+    def create_item(self, item: dict[str, Any]) -> dict[str, Any]:
         return create_item(self._password, item)
 
-    def create_folder(self, folder: dict) -> dict:
+    def create_folder(self, folder: dict[str, Any]) -> dict[str, Any]:
         return create_folder(self._password, folder)
 
-    def create_attachment(self, file_path: str, item_id: str) -> dict:
+    def create_attachment(self, file_path: str, item_id: str) -> dict[str, Any]:
         return create_attachment(self._password, file_path, item_id)
 
     def get_password(self, item_name: str) -> str:
         return get_password(self._password, item_name)
 
-    def get_item(self, id_or_name: str) -> dict:
+    def get_item(self, id_or_name: str) -> dict[str, Any]:
         return get_item(self._password, id_or_name)
 
     def get_username(self, id_or_name: str) -> str:
@@ -79,7 +81,7 @@ class Bitwarden:
     def get_totp(self, id_or_name: str) -> str:
         return get_totp(self._password, id_or_name)
 
-    def get_template(self, object_type: str) -> dict:
+    def get_template(self, object_type: str) -> dict[str, Any]:
         return get_template(object_type)
 
     def list_items(
@@ -90,7 +92,7 @@ class Bitwarden:
         organization_id: str | None = None,
         url: str | None = None,
         trash: bool = False,
-    ) -> list[dict]:
+    ) -> list[dict[str, Any]]:
         return list_items(
             self._password,
             search=search,
@@ -101,28 +103,28 @@ class Bitwarden:
             trash=trash,
         )
 
-    def list_folders(self, search: str | None = None) -> list[dict]:
+    def list_folders(self, search: str | None = None) -> list[dict[str, Any]]:
         return list_folders(self._password, search=search)
 
     def list_collections(
         self,
         organization_id: str | None = None,
         search: str | None = None,
-    ) -> list[dict]:
+    ) -> list[dict[str, Any]]:
         return list_collections(
             self._password, organization_id=organization_id, search=search
         )
 
-    def list_organizations(self, search: str | None = None) -> list[dict]:
+    def list_organizations(self, search: str | None = None) -> list[dict[str, Any]]:
         return list_organizations(self._password, search=search)
 
     def edit_password(self, item_name: str, new_password: str) -> None:
         edit_password(self._password, item_name, new_password)
 
-    def edit_item(self, item_id: str, item: dict) -> dict:
+    def edit_item(self, item_id: str, item: dict[str, Any]) -> dict[str, Any]:
         return edit_item(self._password, item_id, item)
 
-    def edit_folder(self, folder_id: str, folder: dict) -> dict:
+    def edit_folder(self, folder_id: str, folder: dict[str, Any]) -> dict[str, Any]:
         return edit_folder(self._password, folder_id, folder)
 
     def delete_item(self, item_id: str, permanent: bool = False) -> None:

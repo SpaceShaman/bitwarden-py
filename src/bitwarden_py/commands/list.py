@@ -1,4 +1,5 @@
 import json
+from typing import Any
 
 from .command_runner import run_command
 
@@ -11,7 +12,7 @@ def list_items(
     organization_id: str | None = None,
     url: str | None = None,
     trash: bool = False,
-) -> list[dict]:
+) -> list[dict[str, Any]]:
     cmd = ["bw", "list", "items"]
     if search:
         cmd += ["--search", search]
@@ -28,7 +29,7 @@ def list_items(
     return json.loads(run_command(cmd, password=password))
 
 
-def list_folders(password: str, search: str | None = None) -> list[dict]:
+def list_folders(password: str, search: str | None = None) -> list[dict[str, Any]]:
     cmd = ["bw", "list", "folders"]
     if search:
         cmd += ["--search", search]
@@ -39,7 +40,7 @@ def list_collections(
     password: str,
     organization_id: str | None = None,
     search: str | None = None,
-) -> list[dict]:
+) -> list[dict[str, Any]]:
     cmd = ["bw", "list", "collections"]
     if organization_id:
         cmd += ["--organizationid", organization_id]
@@ -48,7 +49,9 @@ def list_collections(
     return json.loads(run_command(cmd, password=password))
 
 
-def list_organizations(password: str, search: str | None = None) -> list[dict]:
+def list_organizations(
+    password: str, search: str | None = None
+) -> list[dict[str, Any]]:
     cmd = ["bw", "list", "organizations"]
     if search:
         cmd += ["--search", search]
