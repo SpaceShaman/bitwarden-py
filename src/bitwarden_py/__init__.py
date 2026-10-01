@@ -1,3 +1,3 @@
-from .main import Bitwarden
+from .main import Bitwarden, MFAMethod
 
-__all__ = ["Bitwarden"]
+__all__ = ["Bitwarden", "MFAMethod"]

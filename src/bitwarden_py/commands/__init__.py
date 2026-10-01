@@ -1,4 +1,4 @@
-from .auth import Status, get_status, login, logout, set_server_url, sync
+from .auth import MFAMethod, Status, get_status, login, logout, set_server_url, sync
 from .create import create_attachment, create_folder, create_item
 from .delete import delete_attachment, delete_folder, delete_item
 from .edit import edit_folder, edit_item, edit_password
@@ -15,12 +15,8 @@ from .get import (
 from .list import list_collections, list_folders, list_items, list_organizations
 
 __all__ = [
+    "MFAMethod",
     "Status",
-    "get_status",
-    "login",
-    "logout",
-    "sync",
-    "set_server_url",
     "create_attachment",
     "create_folder",
     "create_item",
@@ -30,9 +26,11 @@ __all__ = [
     "edit_folder",
     "edit_item",
     "edit_password",
+    "generate_password",
     "get_item",
     "get_notes",
     "get_password",
+    "get_status",
     "get_template",
     "get_totp",
     "get_uri",
@@ -41,5 +39,8 @@ __all__ = [
     "list_folders",
     "list_items",
     "list_organizations",
-    "generate_password",
+    "login",
+    "logout",
+    "set_server_url",
+    "sync",
 ]

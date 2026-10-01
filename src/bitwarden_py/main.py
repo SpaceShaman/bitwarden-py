@@ -1,6 +1,7 @@
 from typing import Any
 
 from .commands import (
+    MFAMethod,
     create_attachment,
     create_folder,
     create_item,
@@ -36,6 +37,8 @@ class Bitwarden:
         email: str,
         password: str,
         server_url: str = "https://vault.bitwarden.eu",
+        mfa_method: MFAMethod | None = None,
+        mfa_code: str | None = None,
     ):
         self._password = password
         status = get_status()
@@ -48,7 +51,7 @@ class Bitwarden:
                 status.status = "unauthenticated"
             set_server_url(server_url)
         if status.status == "unauthenticated":
-            login(email, password)
+            login(email, password, mfa_method, mfa_code)
         sync()
 
     def logout(self) -> None:

@@ -1,5 +1,6 @@
 import json
 from dataclasses import dataclass
+from enum import Enum
 from typing import Literal
 
 from .command_runner import run_command
@@ -12,6 +13,12 @@ class Status:
     user_email: str
 
 
+class MFAMethod(Enum):
+    TOTP = "0"
+    Email = "1"
+    Yubikey = "2"
+
+
 def get_status() -> Status:
     output = run_command(["bw", "status"])
     status_data = json.loads(output)
@@ -22,16 +29,23 @@ def get_status() -> Status:
     )
 
 
-def login(email: str, password: str) -> None:
-    run_command(
-        [
-            "bw",
-            "login",
-            email,
-            password,
-            "--raw",
-        ],
-    )
+def login(
+    email: str,
+    password: str,
+    mfa_method: MFAMethod | None = None,
+    mfa_code: str | None = None,
+) -> None:
+    command = [
+        "bw",
+        "login",
+        email,
+        password,
+        "--raw",
+    ]
+    if mfa_method and mfa_code:
+        command.extend(["--method", mfa_method.value, "--code", mfa_code])
+
+    run_command(command)
 
 
 def logout() -> None:
