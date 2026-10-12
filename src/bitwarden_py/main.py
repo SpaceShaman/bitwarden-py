@@ -52,7 +52,14 @@ class Bitwarden:
             set_server_url(server_url)
         if status.status == "unauthenticated":
             login(email, password, mfa_method, mfa_code)
-        sync()
+        try:
+            sync()
+        except RuntimeError as error:
+            if "Refresh Access token error" not in str(error):
+                raise
+            logout()
+            login(email, password, mfa_method, mfa_code)
+            sync()
 
     def logout(self) -> None:
         logout()
