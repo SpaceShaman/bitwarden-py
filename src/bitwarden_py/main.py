@@ -55,7 +55,13 @@ class Bitwarden:
         try:
             sync()
         except RuntimeError as error:
-            if "Refresh Access token error" not in str(error):
+            if not any(
+                message in str(error)
+                for message in [
+                    "Refresh Access token error",
+                    "You are not logged in",
+                ]
+            ):
                 raise
             logout()
             login(email, password, mfa_method, mfa_code)
